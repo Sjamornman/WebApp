@@ -3,9 +3,9 @@
 		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.0.0-rc11.min.js"></script>
 		<script type="text/javascript">
 		AWS.config.update({
-		    accessKeyId: 'AKIAJCY36WFTU4JCMXXQ',
-		    secretAccessKey: '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',
-		    region: 'ap-northeast-1'
+		    accessKeyId: '',
+		    secretAccessKey: '',
+		    region: ''
 		});
 		</script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -23,7 +23,7 @@
 	<button id="upload-button" class="btn btn-primary">Upload to S3</button></center>
 	<div id="results"></div>
 	<script type="text/javascript">
-		var s3BucketName = 'sittisak-tidal';
+		var s3BucketName = '';
 		var bucket = new AWS.S3({
 		    params: {
 		        Bucket: s3BucketName
