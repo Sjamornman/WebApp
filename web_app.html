@@ -1,0 +1,78 @@
+<html style="background-color: #666666;">
+	<head>
+		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.0.0-rc11.min.js"></script>
+		<script type="text/javascript">
+		AWS.config.update({
+		    accessKeyId: 'AKIAJCY36WFTU4JCMXXQ',
+		    secretAccessKey: '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',
+		    region: 'ap-northeast-1'
+		});
+		</script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+	</head>
+<body>
+	<h1 style="text-align: center;background-color: #666666;padding-bottom: 12px">Upload File</h1>
+	<center style="padding: 12px" ><input type="file" id="file-chooser" style="display: inline;" />
+	<button id="upload-button" class="btn btn-primary">Upload to S3</button></center>
+	<div id="results"></div>
+	<script type="text/javascript">
+		var s3BucketName = 'sittisak-tidal';
+		var bucket = new AWS.S3({
+		    params: {
+		        Bucket: s3BucketName
+		    }
+		});
+		var fileChooser = document.getElementById('file-chooser');
+		var button = document.getElementById('upload-button');
+		var results = document.getElementById('results');
+		button.addEventListener('click', function() {
+		    var file = fileChooser.files[0];
+		    if (file) {
+		        results.innerHTML = "";
+		        var params = {
+		            Key: file.name,
+		            ContentType: file.type,
+		            Body: file
+		        };
+		        bucket.putObject(params, function(err, data) {
+		            if (err) {
+		                results.innerHTML = err;
+		            } else {
+		                alert("Uploaded");
+		                location.reload();
+		            }
+		        });
+		    } else {
+		        results.innerHTML = 'Nothing to upload.';
+		    }
+		}, false);
+	</script>
+	<div id="status" style="text-align: center;background-color: #999999;"></div></center>
+	<ul id="objects" style="text-align: center;padding-top: 24px"></ul>
+	<script type="text/javascript">
+		var bucket = new AWS.S3({
+		    params: {
+		        Bucket: s3BucketName
+		    }
+		}); 
+		bucket.listObjects(function(err, data) {
+		    if (err) {
+		        document.getElementById('status').innerHTML = 'Could not load objects from S3';
+		    } else {
+		        document.getElementById('status').innerHTML = data.Contents.length + ' Files from S3';
+		        for (var i = 0; i < data.Contents.length; i++) {
+		            console.log(data.Name);
+		            document.getElementById('objects').innerHTML += data.Contents[i].Key + '</br>';
+		        }
+		    }
+		});
+	</script>
+</body>
+</html>
